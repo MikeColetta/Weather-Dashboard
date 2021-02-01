@@ -21,6 +21,8 @@
     min-width: 150px;
     width: 10vw;
     height: 200px;
+    background-color: blue;
+    color: white;
 }
 
 #fiveDayForecast {

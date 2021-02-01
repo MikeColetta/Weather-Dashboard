@@ -52,9 +52,9 @@ $("#searchButton").on("click", function() {
                 var forecastCard = $(`
                     <div class="card forecastCard">
                         <p>${data.list[index].dt_txt}</p>
-                        <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="">
-                        <p>temp</p>
-                        <p>humidty</p>
+                        <img src="http://openweathermap.org/img/wn/${data.list[index].weather.icon}@2x.png" alt="">
+                        <p>Temp: ${data.list[index].main.temp} ºF</p>
+                        <p>Humidity: ${data.list[index].main.humidity}%</p>
                     </div>`)
             $("#fiveDayForecast").append(forecastCard)  
                 index+=8
