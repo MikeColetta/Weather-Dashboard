@@ -12,3 +12,7 @@
 {
     text-transform:capitalize;
 }
+
+#searchArea {
+    height: 100%;
+}
