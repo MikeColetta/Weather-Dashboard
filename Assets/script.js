@@ -16,6 +16,7 @@ for (i = 0; i < savedCityHistory.length; i++) {
 $("#searchButton").on("click", function() {
     $("currentWeather").empty();
     var citySearch = $("#citySearch").val();
+    var currentUV
     console.log(citySearch);
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
     console.log(requestCurrentUrl);
@@ -29,13 +30,32 @@ $("#searchButton").on("click", function() {
         //This is where you put the printed content.
         var currentWeather = $("#currentWeather");
         console.log(data)
+
+    getUVIndex(data)
+        function getUVIndex(data) {
+            var lat = data.coord.lat
+            var lon = data.coord.lon
+            console.log(lat)
+            var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
+            fetch(requestUVURL)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                console.log(data)
+                var currentUV = data.current.uvi
+                console.log(currentUV)
+                return currentUV
+            })
+        }
+
         var currentWeatherCard = $(`
         <div class="card px-3 currentCard">
                     <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
                     <p>Temperature: ${data.main.temp} ºF</p>
                     <p>Humidity: ${data.main.humidity}</p>
                     <p>Wind: ${data.wind.speed} MPH</p>
-                    <p>UV Index:</p>
+                    <p>UV Index: ${currentUV}</p>
                 </div>`)
         $(currentWeather).append(currentWeatherCard);
         printFiveDay(citySearch)
