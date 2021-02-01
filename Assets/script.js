@@ -2,60 +2,86 @@ $(document).ready(function () {
 //grab local storage
 var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
 console.log(savedCityHistory)
-
+//Use a set to remove repeat items in an array.
 for (i = 0; i < savedCityHistory.length; i++) {
     displayCitySearch(savedCityHistory[i])
 }
 
 $("#searchButton").on("click", function() {
     $("currentWeather").empty();
-    var citySearch = $("#citySearch").val()
-    console.log(citySearch)
+    var citySearch = $("#citySearch").val();
+    console.log(citySearch);
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
-    console.log(requestCurrentUrl)
-    saveCitySearch()
+    console.log(requestCurrentUrl);
+    saveCitySearch();
     fetch(requestCurrentUrl)
     .then(function (response) {
       return response.json();
     })
+
     .then(function (data) {
         //This is where you put the printed content.
         var currentWeather = $("#currentWeather");
 
+        var currentWeatherCard = $(`
+        `)
         var city = $("<h1></h1>").text(citySearch);
-        $(city).addClass("capitalize")
-        var temp = $("<h2></h2>").text("Temperature: " + data.main.temp + " ºF")
-        var humidity = $("<h2></h2>").text("Humidity: " + data.main.humidity + "%")
-        var wind = $("<h2></h2>").text("Wind: " + data.wind.speed + " MPH")
+        $(city).addClass("capitalize");
+        var temp = $("<h2></h2>").text("Temperature: " + data.main.temp + " ºF");
+        var humidity = $("<h2></h2>").text("Humidity: " + data.main.humidity + "%");
+        var wind = $("<h2></h2>").text("Wind: " + data.wind.speed + " MPH");
         //UV goes here as var uVIndex = $("<h2></h2>").text("UV Index: " + data.wind.speed + " MPH")
-        $(currentWeather).append(city, temp, humidity, wind);      // Append the new elements
-
+        $(currentWeather).append(city, temp, humidity, wind);
+        printFiveDay(citySearch)
       })
     });
 
 
-//     function printFiveDay(){
-//      var fiveDayForecast = $("#fiveDayForecast");
+     function printFiveDay(citySearch){
+        var requestForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
+        fetch(requestForecastUrl)
+        .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data)
+            var numberOfDays = 5
+            var index = 0
+            for (var i = 0; i < numberOfDays; i++) {
+                console.log(data.list[index])
+                var forecastCard = $(`
+                    <div class="card forecastCard">
+                        <p>${data.list[index].dt_txt}</p>
+                        <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="">
+                        <p>temp</p>
+                        <p>humidty</p>
+                    </div>`)
+            $("#fiveDayForecast").append(forecastCard)  
+                index+=8
+            }
+          })
     
-//      currentWeather.addClass()
-//  }
+    // var fiveDayForecast = $("#fiveDayForecast");
+    
+    //  currentWeather.addClass()
+  }
 
  //get local storage function
 function saveCitySearch(citySearch) {
-    var citySearch = $("#citySearch").val()
-    console.log(citySearch)
-    savedCityHistory.push(citySearch)
-    localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory))
-    console.log(savedCityHistory)
+    var citySearch = $("#citySearch").val();
+    console.log(citySearch);
+    savedCityHistory.push(citySearch);
+    localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory));
+    console.log(savedCityHistory);
 }
 
 
 function displayCitySearch(citySearch) {
-    var searchedCity = $("<li></li>")
-    $(searchedCity).addClass("list-group-item")
-    $(searchedCity).text(citySearch)
-    console.log(searchedCity)
-    $("#searchHistory").prepend(searchedCity)
+    var searchedCity = $("<li class='cityHistory'></li>");
+    $(searchedCity).addClass("list-group-item");
+    $(searchedCity).text(citySearch);
+    console.log(searchedCity);
+    $("#searchHistory").prepend(searchedCity);
 }
 })
 // function renderCitySearch() {

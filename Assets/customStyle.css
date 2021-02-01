@@ -16,3 +16,18 @@
 #searchArea {
     height: 100%;
 }
+
+.forecastCard {
+    min-width: 150px;
+    width: 10vw;
+    height: 200px;
+}
+
+#fiveDayForecast {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cityHistory {
+    width: 100px;
+}
