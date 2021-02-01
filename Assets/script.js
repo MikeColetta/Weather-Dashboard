@@ -1,5 +1,8 @@
 $(document).ready(function () {
-//grab local storage
+var currentDate = moment().format("M/D/YYYY")
+console.log(currentDate)
+
+    //grab local storage
 var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
 console.log(savedCityHistory)
 //Use a set to remove repeat items in an array.
@@ -22,10 +25,10 @@ $("#searchButton").on("click", function() {
     .then(function (data) {
         //This is where you put the printed content.
         var currentWeather = $("#currentWeather");
-
+        console.log(data)
         var currentWeatherCard = $(`
         <div class="card px-3 currentCard">
-                    <h1>${citySearch} Date Icon</h1>
+                    <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
                     <p>Temperature: ${data.main.temp} ºF</p>
                     <p>Humidity: ${data.main.humidity}</p>
                     <p>Wind: ${data.wind.speed} MPH</p>
@@ -52,7 +55,7 @@ $("#searchButton").on("click", function() {
                 var forecastCard = $(`
                     <div class="card forecastCard">
                         <p>${data.list[index].dt_txt}</p>
-                        <img src="http://openweathermap.org/img/wn/${data.list[index].weather.icon}@2x.png" alt="">
+                        <img src="http://openweathermap.org/img/wn/${data.list[index].weather[0].icon}@2x.png" alt="">
                         <p>Temp: ${data.list[index].main.temp} ºF</p>
                         <p>Humidity: ${data.list[index].main.humidity}%</p>
                     </div>`)
