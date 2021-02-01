@@ -5,7 +5,7 @@ var cityHistory = []
 $("#searchButton").on("click", function() {
     var citySearch = $("#citySearch").val()
     console.log(citySearch)
-    var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=metric&apikey=09a0aab280840ec6d582b6d7445e4771";
+    var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
     console.log(requestUrl)
 
     fetch(requestUrl)
