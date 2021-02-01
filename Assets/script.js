@@ -1,10 +1,9 @@
 var cityHistory = []
 
-console.log(citySearch)
 //grab local storage run print inside
-function getCitySearch(){
+// function getCitySearch(){
     
-}
+// }
 
 
 $("#searchButton").on("click", function() {
@@ -12,7 +11,7 @@ $("#searchButton").on("click", function() {
     console.log(citySearch)
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
     console.log(requestCurrentUrl)
-
+    saveCitySearch()
     fetch(requestCurrentUrl)
     .then(function (response) {
       return response.json();
@@ -41,12 +40,15 @@ $("#searchButton").on("click", function() {
 
  //get local storage function
 function saveCitySearch() {
-
+    var citySearch = $("#citySearch").val()
+    console.log(citySearch)
+    cityHistory.push(citySearch)
+    localStorage.setItem("cityHistory", JSON.stringify(cityHistory))
 }
 
-function renderCitySearch() {
+// function renderCitySearch() {
 
-}
+// }
  //print local storage function
 
 
