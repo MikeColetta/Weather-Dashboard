@@ -1,6 +1,10 @@
 var cityHistory = []
 
 console.log(citySearch)
+//grab local storage run print inside
+function getCitySearch(){
+    
+}
 
 
 $("#searchButton").on("click", function() {
@@ -35,6 +39,15 @@ $("#searchButton").on("click", function() {
      currentWeather.addClass()
  }
 
+ //get local storage function
+function saveCitySearch() {
+
+}
+
+function renderCitySearch() {
+
+}
+ //print local storage function
 
 
 //Write HTML - Use JavaScript to write the HTML in an empty div by creating the element and adding bootstrap classes to it. 
