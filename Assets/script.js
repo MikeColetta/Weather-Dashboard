@@ -24,14 +24,14 @@ $("#searchButton").on("click", function() {
         var currentWeather = $("#currentWeather");
 
         var currentWeatherCard = $(`
-        `)
-        var city = $("<h1></h1>").text(citySearch);
-        $(city).addClass("capitalize");
-        var temp = $("<h2></h2>").text("Temperature: " + data.main.temp + " ºF");
-        var humidity = $("<h2></h2>").text("Humidity: " + data.main.humidity + "%");
-        var wind = $("<h2></h2>").text("Wind: " + data.wind.speed + " MPH");
-        //UV goes here as var uVIndex = $("<h2></h2>").text("UV Index: " + data.wind.speed + " MPH")
-        $(currentWeather).append(city, temp, humidity, wind);
+        <div class="card px-3 currentCard">
+                    <h1>${citySearch} Date Icon</h1>
+                    <p>Temperature: ${data.main.temp} ºF</p>
+                    <p>Humidity: ${data.main.humidity}</p>
+                    <p>Wind: ${data.wind.speed} MPH</p>
+                    <p>UV Index:</p>
+                </div>`)
+        $(currentWeather).append(currentWeatherCard);
         printFiveDay(citySearch)
       })
     });
