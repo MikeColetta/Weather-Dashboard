@@ -2,3 +2,7 @@
     color: white;
     text-align: center;
 }
+
+.currentWeather {
+    height: 300px;
+}

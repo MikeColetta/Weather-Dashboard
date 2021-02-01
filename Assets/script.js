@@ -1,22 +1,39 @@
 var cityHistory = []
 
+console.log(citySearch)
 
 
 $("#searchButton").on("click", function() {
     var citySearch = $("#citySearch").val()
     console.log(citySearch)
-    var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
-    console.log(requestUrl)
+    var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
+    console.log(requestCurrentUrl)
 
-    fetch(requestUrl)
+    fetch(requestCurrentUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data)
+        console.log(Math.floor(data.main.temp))
+        //This is where you put the printed content.
+        var currentWeather = $("#currentWeather");
+
+        var city = $("<h1></h1>").text(citySearch);
+        var temp = $("<h2></h2>").text("Temperature: " + data.main.temp + " ºF")
+        var humidity = $("<h2></h2>").text("Humidity: " + data.main.humidity + "%")
+        var wind = $("<h2></h2>").text("Wind: " + data.wind.speed + " MPH")
+        //UV goes here as var uVIndex = $("<h2></h2>").text("UV Index: " + data.wind.speed + " MPH")
+        $(currentWeather).append(city, temp, humidity, wind);      // Append the new elements
+
       })
     });
 
+
+    function printFiveDay(){
+     var fiveDayForecast = $("#fiveDayForecast");
+
+     currentWeather.addClass()
+ }
 
 
 
