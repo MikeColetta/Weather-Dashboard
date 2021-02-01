@@ -1,7 +1,11 @@
 $(document).ready(function () {
 //grab local storage
 var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
-    
+console.log(savedCityHistory)
+
+for (i = 0; i < savedCityHistory.length; i++) {
+    displayCitySearch(savedCityHistory[i])
+}
 
 $("#searchButton").on("click", function() {
     $("currentWeather").empty();
@@ -30,14 +34,14 @@ $("#searchButton").on("click", function() {
     });
 
 
-    function printFiveDay(){
-     var fiveDayForecast = $("#fiveDayForecast");
+//     function printFiveDay(){
+//      var fiveDayForecast = $("#fiveDayForecast");
     
-     currentWeather.addClass()
- }
+//      currentWeather.addClass()
+//  }
 
  //get local storage function
-function saveCitySearch() {
+function saveCitySearch(citySearch) {
     var citySearch = $("#citySearch").val()
     console.log(citySearch)
     savedCityHistory.push(citySearch)
@@ -45,6 +49,14 @@ function saveCitySearch() {
     console.log(savedCityHistory)
 }
 
+
+function displayCitySearch(citySearch) {
+    var searchedCity = $("<li></li>")
+    $(searchedCity).addClass("list-group-item")
+    $(searchedCity).text(citySearch)
+    console.log(searchedCity)
+    $("#searchHistory").prepend(searchedCity)
+}
 })
 // function renderCitySearch() {
 
