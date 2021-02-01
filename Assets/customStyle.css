@@ -1,6 +1,10 @@
-.weatherDash {
+body {
+    text-align: left;
+}
+
+#weatherDash {
     color: white;
-    text-align: center;
+    justify-content: center;
 }
 
 .col {
@@ -15,6 +19,7 @@
 
 #searchArea {
     height: 100%;
+    background-color: lightblue;
 }
 
 .forecastCard {
@@ -36,5 +41,5 @@
 }
 
 .cityHistory {
-    width: 200px;
+    width: 250px;
 }
