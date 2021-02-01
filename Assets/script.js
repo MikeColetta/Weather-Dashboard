@@ -6,6 +6,9 @@ console.log(currentDate)
 var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
 console.log(savedCityHistory)
 //Use a set to remove repeat items in an array.
+var savedHistorySet = new Set(savedCityHistory)
+console.log(savedHistorySet)
+
 for (i = 0; i < savedCityHistory.length; i++) {
     displayCitySearch(savedCityHistory[i])
 }
@@ -55,7 +58,7 @@ $("#searchButton").on("click", function() {
                 var forecastCard = $(`
                     <div class="card forecastCard">
                         <p>${data.list[index].dt_txt}</p>
-                        <img src="http://openweathermap.org/img/wn/${data.list[index].weather[0].icon}@2x.png" alt="">
+                        <img src="http://openweathermap.org/img/wn/${data.list[index].weather[0].icon}@2x.png" class="iconImage">
                         <p>Temp: ${data.list[index].main.temp} ºF</p>
                         <p>Humidity: ${data.list[index].main.humidity}%</p>
                     </div>`)
@@ -63,10 +66,6 @@ $("#searchButton").on("click", function() {
                 index+=8
             }
           })
-    
-    // var fiveDayForecast = $("#fiveDayForecast");
-    
-    //  currentWeather.addClass()
   }
 
  //get local storage function
@@ -87,11 +86,6 @@ function displayCitySearch(citySearch) {
     $("#searchHistory").prepend(searchedCity);
 }
 })
-// function renderCitySearch() {
-
-// }
- //print local storage function
-
 
 //Write HTML - Use JavaScript to write the HTML in an empty div by creating the element and adding bootstrap classes to it. 
 
