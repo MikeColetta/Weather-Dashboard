@@ -43,3 +43,7 @@ body {
 .cityHistory {
     width: 250px;
 }
+
+.currentCard {
+    margin-bottom: 10px;
+}

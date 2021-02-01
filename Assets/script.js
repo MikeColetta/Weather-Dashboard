@@ -15,8 +15,8 @@ for (i = 0; i < savedCityHistory.length; i++) {
 
 $("#searchButton").on("click", function() {
     $("currentWeather").empty();
+    var currentUV = 0
     var citySearch = $("#citySearch").val();
-    var currentUV
     console.log(citySearch);
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
     console.log(requestCurrentUrl);
@@ -43,12 +43,10 @@ $("#searchButton").on("click", function() {
             })
             .then(function (data) {
                 console.log(data)
-                var currentUV = data.current.uvi
+                currentUV = data.current.uvi
                 console.log(currentUV)
-                return currentUV
             })
         }
-
         var currentWeatherCard = $(`
         <div class="card px-3 currentCard">
                     <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
@@ -56,7 +54,8 @@ $("#searchButton").on("click", function() {
                     <p>Humidity: ${data.main.humidity}</p>
                     <p>Wind: ${data.wind.speed} MPH</p>
                     <p>UV Index: ${currentUV}</p>
-                </div>`)
+                </div>
+                <h1>5-Day Forecast</h1>`)
         $(currentWeather).append(currentWeatherCard);
         printFiveDay(citySearch)
       })
