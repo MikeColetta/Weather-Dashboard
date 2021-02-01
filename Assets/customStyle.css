@@ -6,3 +6,8 @@
 .currentWeather {
     height: 300px;
 }
+
+.capitalize
+{
+    text-transform:capitalize;
+}

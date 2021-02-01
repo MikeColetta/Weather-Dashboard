@@ -1,12 +1,10 @@
-var cityHistory = []
-
-//grab local storage run print inside
-// function getCitySearch(){
+$(document).ready(function () {
+//grab local storage
+var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
     
-// }
-
 
 $("#searchButton").on("click", function() {
+    $("currentWeather").empty();
     var citySearch = $("#citySearch").val()
     console.log(citySearch)
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
@@ -17,11 +15,11 @@ $("#searchButton").on("click", function() {
       return response.json();
     })
     .then(function (data) {
-        console.log(Math.floor(data.main.temp))
         //This is where you put the printed content.
         var currentWeather = $("#currentWeather");
 
         var city = $("<h1></h1>").text(citySearch);
+        $(city).addClass("capitalize")
         var temp = $("<h2></h2>").text("Temperature: " + data.main.temp + " ºF")
         var humidity = $("<h2></h2>").text("Humidity: " + data.main.humidity + "%")
         var wind = $("<h2></h2>").text("Wind: " + data.wind.speed + " MPH")
@@ -34,7 +32,7 @@ $("#searchButton").on("click", function() {
 
     function printFiveDay(){
      var fiveDayForecast = $("#fiveDayForecast");
-
+    
      currentWeather.addClass()
  }
 
@@ -42,10 +40,12 @@ $("#searchButton").on("click", function() {
 function saveCitySearch() {
     var citySearch = $("#citySearch").val()
     console.log(citySearch)
-    cityHistory.push(citySearch)
-    localStorage.setItem("cityHistory", JSON.stringify(cityHistory))
+    savedCityHistory.push(citySearch)
+    localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory))
+    console.log(savedCityHistory)
 }
 
+})
 // function renderCitySearch() {
 
 // }
