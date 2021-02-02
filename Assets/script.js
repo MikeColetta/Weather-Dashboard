@@ -14,7 +14,7 @@ for (i = 0; i < savedCityHistory.length; i++) {
 }
 
 $("#searchButton").on("click", function() {
-    $("currentWeather").empty();
+    clearPage()
     var citySearch = $("#citySearch").val();
     console.log(citySearch);
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
@@ -103,6 +103,12 @@ function displayCitySearch(citySearch) {
     $(searchedCity).text(citySearch);
     console.log(searchedCity);
     $("#searchHistory").prepend(searchedCity);
+}
+
+function clearPage() {
+    $("#currentWeather").html("")
+    $("#fiveDayForecast").html("")
+    return
 }
 })
 
