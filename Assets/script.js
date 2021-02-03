@@ -1,6 +1,7 @@
 $(document).ready(function () {
 var currentDate = moment().format("M/D/YYYY")
 console.log(currentDate)
+var currentWeather = $("#currentWeather");
 
     //grab local storage
 var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
@@ -16,51 +17,45 @@ for (i = 0; i < savedCityHistory.length; i++) {
 $("#searchButton").on("click", function() {
     clearPage()
     var citySearch = $("#citySearch").val();
-    console.log(citySearch);
     var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
-    console.log(requestCurrentUrl);
     saveCitySearch();
     fetch(requestCurrentUrl)
     .then(function (response) {
+        console.log(response)
       return response.json();
     })
 
     .then(function (data) {
-        //This is where you put the printed content.
-        var currentWeather = $("#currentWeather");
-        var currentUV
         console.log(data)
-
-    getUVIndex(data)
-        function getUVIndex(data) {
-            var lat = data.coord.lat
-            var lon = data.coord.lon
-            console.log(lat)
-            var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
-            fetch(requestUVURL)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                console.log(data)
-                currentUV = data.current.uvi
-                console.log(currentUV)
-            })
-        }
         var currentWeatherCard = $(`
-        <div class="card px-3 currentCard">
+        <div class="card px-3 currentCard" id="currentCard">
                     <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
                     <p>Temperature: ${data.main.temp} ºF</p>
                     <p>Humidity: ${data.main.humidity}</p>
                     <p>Wind: ${data.wind.speed} MPH</p>
+                    </div>
+                    <h1>5-Day Forecast</h1>`)
+                    currentWeather.append(currentWeatherCard);
+        
+        var lat = data.coord.lat
+        var lon = data.coord.lon
+        var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
+        fetch(requestUVURL)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                currentUV = data.current.uvi
+                console.log(data)
+                var uVIndexElement = $(`
                     <p>UV Index: ${currentUV}</p>
-                </div>
-                <h1>5-Day Forecast</h1>`)
-        $(currentWeather).append(currentWeatherCard);
-        printFiveDay(citySearch)
+                `)
+                $("#currentCard").append(uVIndexElement);
+                printFiveDay(citySearch)
+            })
+        
       })
     });
-
 
      function printFiveDay(citySearch){
         var requestForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
@@ -69,11 +64,9 @@ $("#searchButton").on("click", function() {
             return response.json();
           })
           .then(function (data) {
-            console.log(data)
             var numberOfDays = 5
             var index = 0
             for (var i = 0; i < numberOfDays; i++) {
-                console.log(data.list[index])
                 var forecastCard = $(`
                     <div class="card forecastCard">
                         <p>${moment(data.list[index].dt_txt).format("M/D/YYYY")}</p>
@@ -90,10 +83,8 @@ $("#searchButton").on("click", function() {
  //get local storage function
 function saveCitySearch(citySearch) {
     var citySearch = $("#citySearch").val();
-    console.log(citySearch);
     savedCityHistory.push(citySearch);
     localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory));
-    console.log(savedCityHistory);
 }
 
 
@@ -101,7 +92,6 @@ function displayCitySearch(citySearch) {
     var searchedCity = $("<li class='cityHistory'></li>");
     $(searchedCity).addClass("list-group-item");
     $(searchedCity).text(citySearch);
-    console.log(searchedCity);
     $("#searchHistory").prepend(searchedCity);
 }
 
