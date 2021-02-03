@@ -6,9 +6,6 @@ var currentWeather = $("#currentWeather");
     //grab local storage
 var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
 console.log(savedCityHistory)
-//Use a set to remove repeat items in an array.
-var savedHistorySet = new Set(savedCityHistory)
-console.log(savedHistorySet)
 
 for (i = 0; i < savedCityHistory.length; i++) {
     displayCitySearch(savedCityHistory[i])
@@ -52,6 +49,8 @@ $("#searchButton").on("click", function() {
                 `)
                 $("#currentCard").append(uVIndexElement);
                 printFiveDay(citySearch)
+
+                //add if else statement to change color.
             })
         
       })
@@ -83,6 +82,7 @@ $("#searchButton").on("click", function() {
  //get local storage function
 function saveCitySearch(citySearch) {
     var citySearch = $("#citySearch").val();
+    if (savedCityHistory.includes(citySearch)) return
     savedCityHistory.push(citySearch);
     localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory));
 }
