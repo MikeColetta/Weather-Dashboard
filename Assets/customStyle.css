@@ -48,3 +48,15 @@ body {
 .currentCard {
     margin-bottom: 10px;
 }
+
+.uVLow {
+    background-color: green;
+}
+
+.uVMid {
+    background-color: yellow;
+}
+
+.uvHigh {
+    background-color: red;
+}

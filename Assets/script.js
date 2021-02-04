@@ -1,30 +1,33 @@
 $(document).ready(function () {
-var currentDate = moment().format("M/D/YYYY")
-console.log(currentDate)
-var currentWeather = $("#currentWeather");
+    var currentDate = moment().format("M/D/YYYY")
+    console.log(currentDate)
+    var currentWeather = $("#currentWeather");
 
-    //grab local storage
-var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
-console.log(savedCityHistory)
+    //Grabs local storage.
+    var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
+    console.log(savedCityHistory)
 
-for (i = 0; i < savedCityHistory.length; i++) {
-    displayCitySearch(savedCityHistory[i])
-}
+    //Loops and displays previous searched cities in local storage.
+    for (i = 0; i < savedCityHistory.length; i++) {
+        displayCitySearch(savedCityHistory[i])
+    }
 
-$("#searchButton").on("click", function() {
-    clearPage()
-    var citySearch = $("#citySearch").val();
-    var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
-    saveCitySearch();
-    fetch(requestCurrentUrl)
-    .then(function (response) {
-        console.log(response)
-      return response.json();
-    })
+    //Initiates search
+    $("#searchButton").on("click", function () {
+        clearPage()
+        var citySearch = $("#citySearch").val();
+        var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
+        saveCitySearch();
+        fetch(requestCurrentUrl)
+            .then(function (response) {
+                console.log(response)
+                return response.json();
+            })
 
-    .then(function (data) {
-        console.log(data)
-        var currentWeatherCard = $(`
+            //Grabs the current weather information.
+            .then(function (data) {
+                console.log(data)
+                var currentWeatherCard = $(`
         <div class="card px-3 currentCard" id="currentCard">
                     <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
                     <p>Temperature: ${data.main.temp} ºF</p>
@@ -32,99 +35,88 @@ $("#searchButton").on("click", function() {
                     <p>Wind: ${data.wind.speed} MPH</p>
                     </div>
                     <h1>5-Day Forecast</h1>`)
-                    currentWeather.append(currentWeatherCard);
-        
-        var lat = data.coord.lat
-        var lon = data.coord.lon
-        var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
-        fetch(requestUVURL)
+                currentWeather.append(currentWeatherCard);
+
+                //Grabs the UV index data.
+                var lat = data.coord.lat
+                var lon = data.coord.lon
+                var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
+                fetch(requestUVURL)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        currentUV = data.current.uvi
+                        console.log(data)
+                        console.log(currentUV)
+                        var uVIndexElement = $(`
+                    <p>UV Index: <button class="btn" id="uVStatusColor">${currentUV}</button></p>
+                `)
+                        $("#currentCard").append(uVIndexElement);
+
+                        checkUVStatus(currentUV)
+                        printFiveDay(citySearch)
+                    })
+            })
+    });
+    //Prints the five day forecast onto small cards in the div.
+    function printFiveDay(citySearch) {
+        var requestForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
+        fetch(requestForecastUrl)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                currentUV = data.current.uvi
-                console.log(data)
-                var uVIndexElement = $(`
-                    <p>UV Index: ${currentUV}</p>
-                `)
-                $("#currentCard").append(uVIndexElement);
-                printFiveDay(citySearch)
-
-                //add if else statement to change color.
-            })
-        
-      })
-    });
-
-     function printFiveDay(citySearch){
-        var requestForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
-        fetch(requestForecastUrl)
-        .then(function (response) {
-            return response.json();
-          })
-          .then(function (data) {
-            var numberOfDays = 5
-            var index = 0
-            for (var i = 0; i < numberOfDays; i++) {
-                var forecastCard = $(`
+                var numberOfDays = 5
+                var index = 0
+                for (var i = 0; i < numberOfDays; i++) {
+                    var forecastCard = $(`
                     <div class="card forecastCard">
                         <p>${moment(data.list[index].dt_txt).format("M/D/YYYY")}</p>
                         <img src="http://openweathermap.org/img/wn/${data.list[index].weather[0].icon}@2x.png" class="iconImage">
                         <p>Temp: ${data.list[index].main.temp} ºF</p>
                         <p>Humidity: ${data.list[index].main.humidity}%</p>
                     </div>`)
-            $("#fiveDayForecast").append(forecastCard)  
-                index+=8
-            }
-          })
-  }
+                    $("#fiveDayForecast").append(forecastCard)
+                    index += 8
+                }
+            })
+    }
 
- //get local storage function
-function saveCitySearch(citySearch) {
-    var citySearch = $("#citySearch").val();
-    if (savedCityHistory.includes(citySearch)) return
-    savedCityHistory.push(citySearch);
-    localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory));
-}
+    //Get local storage function
+    function saveCitySearch(citySearch) {
+        var citySearch = $("#citySearch").val();
+        if (savedCityHistory.includes(citySearch)) return
+        savedCityHistory.push(citySearch);
+        localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory));
+    }
 
+    //Displays the city into the history
+    function displayCitySearch(citySearch) {
+        var searchedCity = $("<li class='cityHistory'></li>");
+        $(searchedCity).addClass("list-group-item");
+        $(searchedCity).text(citySearch);
+        $("#searchHistory").prepend(searchedCity);
+    }
 
-function displayCitySearch(citySearch) {
-    var searchedCity = $("<li class='cityHistory'></li>");
-    $(searchedCity).addClass("list-group-item");
-    $(searchedCity).text(citySearch);
-    $("#searchHistory").prepend(searchedCity);
-}
+    //Clears the divs when you search again.
+    function clearPage() {
+        $("#currentWeather").html("")
+        $("#fiveDayForecast").html("")
+        return
+    }
 
-function clearPage() {
-    $("#currentWeather").html("")
-    $("#fiveDayForecast").html("")
-    return
-}
+    //Checks the UV status and gives a color indicator.
+    function checkUVStatus(currentUV) {
+        console.log(currentUV)
+        if (currentUV <= 2) {
+            $("#uVStatusColor").addClass("btn-success")
+        }
+        else if (currentUV > 2 && currentUV < 8) {
+            $("#uVStatusColor").addClass("btn-warning")
+        }
+        else {
+            $("#uVStatusColor").addClass("btn-danger")
+        }
+    }
 })
-
-//Write HTML - Use JavaScript to write the HTML in an empty div by creating the element and adding bootstrap classes to it. 
-
-//Basic CSS
-
-//JavaScript - GET API KEY!!!
-/*GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-    1. Search Form - event listener on the submit button
-    2. Add that city to local storage.
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-    1. Fetch to get weather data from that city using OpenWeather API.
-    2. put the data from that fetch into my HTML using $(html element).text("TEXT") pulls with JSON.
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-    1.  Pull different pieces of information from the API. Check for free API.
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-    1. Color code the button to be different colors based on the UV Index (Probably a danger button for severe, then different colors.)
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-    1. 5 bootstrap cards that are made and display API information
-    2. Check to see if weather is partly cloudy, sunny, etc. add FA icon to element.
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
-    1. When we pull localStorage we are going to create buttons or links that then search that city. Since it's just one city I'll use an array.
-    Our links will run the same function that our initial search runs just with a different city name.*/
