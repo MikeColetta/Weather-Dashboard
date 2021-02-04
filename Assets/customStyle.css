@@ -18,8 +18,12 @@ body {
 }
 
 #searchArea {
-    height: 100%;
+    height: 100vh;
     background-color: lightblue;
+}
+
+#searchHistory {
+    padding: 0;
 }
 
 .forecastCard {
@@ -42,7 +46,9 @@ body {
 }
 
 .cityHistory {
-    width: 250px;
+    width: 12vw;
+    padding: 5px 10px;
+    padding-right: 0;
 }
 
 .currentCard {
