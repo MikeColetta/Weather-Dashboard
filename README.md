@@ -16,9 +16,15 @@ After I got that to work I added the five day forecast. Initially I used JQuery 
 The last JavaScript features I added were to fix a scoping problem for the UV index. I initially had my UV index in a separate function because I didn't know I could include multiple fetches in one function. I then added the .includes method onto the array of city history in the saveCitySearch function so I wouldn't display repeat cities. The final JavaScript feature I added was to use an if, else if, else statment to add the bootstrap button color to the UV index based on the severity level. 
 
 
-## Link
+## Project Link
+[Deployed Link](https://mikecoletta.github.io/Weather-Dashboard/)
 
 ## Screenshots
+
+![Screenshot 1](Images/Screenshot1.JPG)
+
+![Screenshot 2](Images/Screenshot2.JPG)
+
 
 ## Credits
 Creating a search input with button (https://stackoverflow.com/questions/45696685/search-input-with-an-icon-bootstrap-4)
