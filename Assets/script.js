@@ -1,25 +1,26 @@
 $(document).ready(function () {
-    var currentDate = moment().format("M/D/YYYY")
+    var currentDate = moment().format("M/D/YYYY");
     var currentWeather = $("#currentWeather");
 
     //Grabs local storage.
-    var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
+    var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || [];
 
     //Loops and displays previous searched cities in local storage.
     for (i = 0; i < savedCityHistory.length; i++) {
-        displayCitySearch(savedCityHistory[i])
+        displayCitySearch(savedCityHistory[i]);
     }
 
     //Initiates search
     $("#searchButton").on("click", function () {
         var citySearch = $("#citySearch").val();
-        printCurrentWeather(citySearch)
-        clearPage()
-        displayCitySearch(citySearch)
-    });
+        if (citySearch === "") return;
+        printCurrentWeather(citySearch);
+        clearPage();
+        displayCitySearch(citySearch);
+    })
 
     //Grabs current weather based on city search.
-    function printCurrentWeather(citySearch){
+    function printCurrentWeather(citySearch) {
         var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
         saveCitySearch();
         fetch(requestCurrentUrl)
@@ -36,32 +37,32 @@ $(document).ready(function () {
                     <p>Humidity: ${data.main.humidity}</p>
                     <p>Wind: ${data.wind.speed} MPH</p>
                     </div>
-                    <h1>5-Day Forecast</h1>`)
+                    <h1>5-Day Forecast</h1>`);
                 currentWeather.append(currentWeatherCard);
 
                 //Grabs the UV index data.
-                var lat = data.coord.lat
-                var lon = data.coord.lon
+                var lat = data.coord.lat;
+                var lon = data.coord.lon;
                 var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
                 fetch(requestUVURL)
                     .then(function (response) {
                         return response.json();
                     })
                     .then(function (data) {
-                        currentUV = data.current.uvi
+                        currentUV = data.current.uvi;
                         var uVIndexElement = $(`
                     <p>UV Index: <button class="btn" id="uVStatusColor">${currentUV}</button></p>
                 `)
                         $("#currentCard").append(uVIndexElement);
-                        checkUVStatus(currentUV)
-                        printFiveDay(citySearch)
+                        checkUVStatus(currentUV);
+                        printFiveDay(citySearch);
                     })
             })
-        }
+    }
 
     //Pull weather data from history
     $("#searchHistory").on("click", "li", function (event) {
-        clearPage()
+        clearPage();
         var citySearch = event.target.innerHTML;
         printCurrentWeather(citySearch);
     })
@@ -74,8 +75,8 @@ $(document).ready(function () {
                 return response.json();
             })
             .then(function (data) {
-                var numberOfDays = 5
-                var index = 0
+                var numberOfDays = 5;
+                var index = 0;
                 for (var i = 0; i < numberOfDays; i++) {
                     var forecastCard = $(`
                     <div class="card forecastCard">
@@ -84,8 +85,8 @@ $(document).ready(function () {
                         <p>Temp: ${data.list[index].main.temp} ºF</p>
                         <p>Humidity: ${data.list[index].main.humidity}%</p>
                     </div>`)
-                    $("#fiveDayForecast").append(forecastCard)
-                    index += 8
+                    $("#fiveDayForecast").append(forecastCard);
+                    index += 8;
                 }
             })
     }
@@ -93,7 +94,7 @@ $(document).ready(function () {
     //Get local storage function
     function saveCitySearch(citySearch) {
         var citySearch = $("#citySearch").val();
-        if (savedCityHistory.includes(citySearch)) return
+        if (savedCityHistory.includes(citySearch)) return;
         savedCityHistory.push(citySearch);
         localStorage.setItem("savedCityHistory", JSON.stringify(savedCityHistory));
     }
@@ -108,21 +109,21 @@ $(document).ready(function () {
 
     //Clears the divs when you search again.
     function clearPage() {
-        $("#currentWeather").html("")
-        $("#fiveDayForecast").html("")
-        return
+        $("#currentWeather").html("");
+        $("#fiveDayForecast").html("");
+        return;
     }
 
     //Checks the UV status and gives a color indicator.
     function checkUVStatus(currentUV) {
         if (currentUV <= 2) {
-            $("#uVStatusColor").addClass("btn-success")
+            $("#uVStatusColor").addClass("btn-success");
         }
         else if (currentUV > 2 && currentUV < 8) {
-            $("#uVStatusColor").addClass("btn-warning")
+            $("#uVStatusColor").addClass("btn-warning");
         }
         else {
-            $("#uVStatusColor").addClass("btn-danger")
-        }    
+            $("#uVStatusColor").addClass("btn-danger");
+        }
     }
 })
