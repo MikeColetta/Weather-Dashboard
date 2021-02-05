@@ -79,7 +79,7 @@ $(document).ready(function () {
                 for (var i = 0; i < numberOfDays; i++) {
                     var forecastCard = $(`
                     <div class="card forecastCard">
-                        <p>${moment(data.list[index].dt_txt).format("M/D/YYYY")}</p>
+                        <h5 class="dateFiveDay">${moment(data.list[index].dt_txt).format("M/D/YYYY")}</h5>
                         <img src="http://openweathermap.org/img/wn/${data.list[index].weather[0].icon}@2x.png" class="iconImage">
                         <p>Temp: ${data.list[index].main.temp} ºF</p>
                         <p>Humidity: ${data.list[index].main.humidity}%</p>

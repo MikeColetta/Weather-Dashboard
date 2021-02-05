@@ -36,8 +36,8 @@ body {
 }
 
 .iconImage {
-    height: 50px;
-    width: 50px;
+    height: 75px;
+    width: 75px;
 }
 
 #fiveDayForecast {
@@ -65,4 +65,8 @@ body {
 
 .uvHigh {
     background-color: red;
+}
+
+.dateFiveDay {
+    font-weight: bold;
 }
