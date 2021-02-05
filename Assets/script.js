@@ -1,11 +1,9 @@
 $(document).ready(function () {
     var currentDate = moment().format("M/D/YYYY")
-    console.log(currentDate)
     var currentWeather = $("#currentWeather");
 
     //Grabs local storage.
     var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || []
-    console.log(savedCityHistory)
 
     //Loops and displays previous searched cities in local storage.
     for (i = 0; i < savedCityHistory.length; i++) {
@@ -25,13 +23,11 @@ $(document).ready(function () {
         saveCitySearch();
         fetch(requestCurrentUrl)
             .then(function (response) {
-                console.log(response)
                 return response.json();
             })
 
             //Grabs the current weather information.
             .then(function (data) {
-                console.log(data)
                 var currentWeatherCard = $(`
         <div class="card px-3 currentCard" id="currentCard">
                     <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
@@ -52,13 +48,10 @@ $(document).ready(function () {
                     })
                     .then(function (data) {
                         currentUV = data.current.uvi
-                        console.log(data)
-                        console.log(currentUV)
                         var uVIndexElement = $(`
                     <p>UV Index: <button class="btn" id="uVStatusColor">${currentUV}</button></p>
                 `)
                         $("#currentCard").append(uVIndexElement);
-
                         checkUVStatus(currentUV)
                         printFiveDay(citySearch)
                     })
@@ -121,7 +114,6 @@ $(document).ready(function () {
 
     //Checks the UV status and gives a color indicator.
     function checkUVStatus(currentUV) {
-        console.log(currentUV)
         if (currentUV <= 2) {
             $("#uVStatusColor").addClass("btn-success")
         }
