@@ -15,6 +15,7 @@ $(document).ready(function () {
         var citySearch = $("#citySearch").val();
         printCurrentWeather(citySearch)
         clearPage()
+        displayCitySearch(citySearch)
     });
 
     //Grabs current weather based on city search.
