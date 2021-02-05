@@ -16,13 +16,13 @@ $(document).ready(function () {
         if (citySearch === "") return;
         printCurrentWeather(citySearch);
         clearPage();
+        saveCitySearch();
         displayCitySearch(citySearch);
     })
 
     //Grabs current weather based on city search.
     function printCurrentWeather(citySearch) {
         var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
-        saveCitySearch();
         fetch(requestCurrentUrl)
             .then(function (response) {
                 return response.json();
