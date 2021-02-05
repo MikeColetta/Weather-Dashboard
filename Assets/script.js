@@ -34,8 +34,8 @@ $(document).ready(function () {
         <div class="card px-3 currentCard" id="currentCard">
                     <h1>${citySearch} - ${currentDate} <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt=""></h1>
                     <p>Temperature: ${data.main.temp} ºF</p>
-                    <p>Humidity: ${data.main.humidity}</p>
-                    <p>Wind: ${data.wind.speed} MPH</p>
+                    <p>Humidity: ${data.main.humidity}%</p>
+                    <p>Wind Speed: ${data.wind.speed} MPH</p>
                     </div>
                     <h1>5-Day Forecast</h1>`);
                 currentWeather.append(currentWeatherCard);
