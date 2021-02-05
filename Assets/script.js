@@ -2,10 +2,10 @@ $(document).ready(function () {
     var currentDate = moment().format("M/D/YYYY");
     var currentWeather = $("#currentWeather");
 
-    //Grabs local storage.
+    //Grabs local storage
     var savedCityHistory = JSON.parse(localStorage.getItem("savedCityHistory")) || [];
 
-    //Loops and displays previous searched cities in local storage.
+    //Loops and displays previous searched cities in local storage
     for (i = 0; i < savedCityHistory.length; i++) {
         displayCitySearch(savedCityHistory[i]);
     }
@@ -19,7 +19,7 @@ $(document).ready(function () {
         displayCitySearch(citySearch);
     })
 
-    //Grabs current weather based on city search.
+    //Grabs current weather based on city search
     function printCurrentWeather(citySearch) {
         clearPage();
         var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
@@ -28,7 +28,7 @@ $(document).ready(function () {
                 return response.json();
             })
 
-            //Grabs the current weather information.
+            //Grabs the current weather information
             .then(function (data) {
                 var currentWeatherCard = $(`
         <div class="card px-3 currentCard" id="currentCard">
@@ -40,7 +40,7 @@ $(document).ready(function () {
                     <h1>5-Day Forecast</h1>`);
                 currentWeather.append(currentWeatherCard);
 
-                //Grabs the UV index data.
+                //Grabs the UV index data
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
                 var requestUVURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&apikey=09a0aab280840ec6d582b6d7445e4771";
@@ -66,7 +66,7 @@ $(document).ready(function () {
         printCurrentWeather(citySearch);
     })
 
-    //Prints the five day forecast onto small cards in the div.
+    //Prints the five day forecast onto small cards in the div
     function printFiveDay(citySearch) {
         var requestForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
         fetch(requestForecastUrl)
@@ -106,14 +106,14 @@ $(document).ready(function () {
         $("#searchHistory").prepend(searchedCity);
     }
 
-    //Clears the divs when you search again.
+    //Clears the divs when you search again
     function clearPage() {
         $("#currentWeather").html("");
         $("#fiveDayForecast").html("");
         return;
     }
 
-    //Checks the UV status and gives a color indicator.
+    //Checks the UV status and gives a color indicator
     function checkUVStatus(currentUV) {
         if (currentUV <= 2) {
             $("#uVStatusColor").addClass("btn-success");
