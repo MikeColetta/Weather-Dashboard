@@ -14,7 +14,12 @@ $(document).ready(function () {
 
     //Initiates search
     $("#searchButton").on("click", function () {
+        printCurrentWeather()
         clearPage()
+    });
+
+    //Grabs current weather based on city search.
+    function printCurrentWeather(){
         var citySearch = $("#citySearch").val();
         var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
         saveCitySearch();
@@ -58,7 +63,13 @@ $(document).ready(function () {
                         printFiveDay(citySearch)
                     })
             })
-    });
+        }
+
+    //Pull weather data from history
+    // $("#searchHistory").on("click", "li", function () {
+    //          printCurrentWeather($(this).text());
+    // })
+
     //Prints the five day forecast onto small cards in the div.
     function printFiveDay(citySearch) {
         var requestForecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
@@ -117,6 +128,6 @@ $(document).ready(function () {
         }
         else {
             $("#uVStatusColor").addClass("btn-danger")
-        }
+        }    
     }
 })
