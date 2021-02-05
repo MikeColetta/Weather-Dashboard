@@ -14,13 +14,13 @@ $(document).ready(function () {
 
     //Initiates search
     $("#searchButton").on("click", function () {
-        printCurrentWeather()
+        var citySearch = $("#citySearch").val();
+        printCurrentWeather(citySearch)
         clearPage()
     });
 
     //Grabs current weather based on city search.
-    function printCurrentWeather(){
-        var citySearch = $("#citySearch").val();
+    function printCurrentWeather(citySearch){
         var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
         saveCitySearch();
         fetch(requestCurrentUrl)
@@ -66,9 +66,11 @@ $(document).ready(function () {
         }
 
     //Pull weather data from history
-    // $("#searchHistory").on("click", "li", function () {
-    //          printCurrentWeather($(this).text());
-    // })
+    $("#searchHistory").on("click", "li", function (event) {
+        clearPage()
+        var citySearch = event.target.innerHTML;
+        printCurrentWeather(citySearch);
+    })
 
     //Prints the five day forecast onto small cards in the div.
     function printFiveDay(citySearch) {
