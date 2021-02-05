@@ -15,13 +15,13 @@ $(document).ready(function () {
         var citySearch = $("#citySearch").val();
         if (citySearch === "") return;
         printCurrentWeather(citySearch);
-        clearPage();
         saveCitySearch();
         displayCitySearch(citySearch);
     })
 
     //Grabs current weather based on city search.
     function printCurrentWeather(citySearch) {
+        clearPage();
         var requestCurrentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&units=imperial&apikey=09a0aab280840ec6d582b6d7445e4771";
         fetch(requestCurrentUrl)
             .then(function (response) {
@@ -62,7 +62,6 @@ $(document).ready(function () {
 
     //Pull weather data from history
     $("#searchHistory").on("click", "li", function (event) {
-        clearPage();
         var citySearch = event.target.innerHTML;
         printCurrentWeather(citySearch);
     })
