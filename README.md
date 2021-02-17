@@ -3,6 +3,14 @@
 ## Project Description
 I wanted to create a weather dashboard that would display both the current weather and the five day forecast for a searched city. The Open Weather API was used to pull and display the city weather information. The UV index also gives you a color coded warning based on the severity level of the index. The user's search history is then saved in local storage. 
 
+## Technologies Used
+* HTML5
+* CSS
+* Bootstrap
+* JavaScript
+* JQuery
+* Open Weather API
+
 ## Process
 
 I started by building the site HTML and CSS. Two divs were also built to eventually hold the current weather and the five day forecast. I used the grid system built into bootstrap to lineup the rows and columns of information. 
